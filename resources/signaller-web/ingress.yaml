@@ -1,0 +1,26 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  namespace: signaller
+  name: signaller-web
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    cert-manager.io/issuer: signaller-ca
+spec:
+  tls:
+    - hosts:
+        - 'signaller.local'
+      secretName: signaller-web-tls
+  rules:
+    - host: signaller.local
+      http:
+        paths:
+          - path: /
+            pathType: "Prefix"
+            backend:
+              service:
+                name: signaller-web
+                port:
+                  number: 80

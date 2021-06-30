@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+# signaller
+kubectl apply -f resources/signaller/namespace.yaml
+
+# signaller-ca
+kubectl apply -f resources/signaller-ca/secret-tls.yaml
+kubectl apply -f resources/signaller-ca/issuer.yaml
+
+sleep 2
+
+# signaller-web
+kubectl apply -f resources/signaller-web/config-map-cfg.yaml
+kubectl apply -f resources/signaller-web/deployment.yaml
+kubectl apply -f resources/signaller-web/service.yaml
+kubectl apply -f resources/signaller-web/ingress.yaml

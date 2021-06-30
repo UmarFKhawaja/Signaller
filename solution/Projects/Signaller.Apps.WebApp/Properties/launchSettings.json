@@ -1,0 +1,15 @@
+﻿{
+  "profiles": {
+    "Signaller.Apps.WebApp": {
+      "commandName": "Project",
+      "dotnetRunMessages": "true",
+      "launchBrowser": false,
+      "applicationUrl": "https://localhost:7443",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ASPNETCORE_Kestrel__Certificates__Default__Path": "../../Keys/localhost.pfx",
+        "ASPNETCORE_Kestrel__Certificates__Default__Password": "Password1234"
+      }
+    }
+  }
+}

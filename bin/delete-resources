@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+# signaller-web
+kubectl delete -f resources/signaller-web/ingress.yaml
+kubectl delete -f resources/signaller-web/service.yaml
+kubectl delete -f resources/signaller-web/deployment.yaml
+kubectl delete -f resources/signaller-web/config-map-cfg.yaml
+
+# signaller-ca
+kubectl delete -f resources/signaller-ca/issuer.yaml
+kubectl delete -f resources/signaller-ca/secret-tls.yaml
+
+sleep 2
+
+# signaller-kubectl delete -f resources/signaller-namespace.yaml

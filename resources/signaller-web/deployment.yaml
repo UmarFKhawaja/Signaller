@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: signaller
+  name: signaller-web
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: signaller-web
+  template:
+    metadata:
+      labels:
+        app: signaller-web
+    spec:
+      containers:
+        - name: signaller-web
+          image: docker.io/khawajaumarfarooq/signaller-web:latest
+          ports:
+            - containerPort: 80
+          envFrom:
+            - configMapRef:
+                name: signaller-web-cfg
