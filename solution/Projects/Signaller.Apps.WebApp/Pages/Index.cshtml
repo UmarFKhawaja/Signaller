@@ -1,7 +1,7 @@
 ﻿@page
 @model IndexModel
 @{
-    ViewData["Title"] = "Home page";
+    var apiUrl = (string) ViewData["ApiUrl"];
 }
 
 <div class="text-center">
@@ -26,7 +26,7 @@
     };
     
     const connection = new signalR.HubConnectionBuilder()
-        .withUrl("/chat")
+        .withUrl("@apiUrl")
         .configureLogging(signalR.LogLevel.Information)
         .build();
     

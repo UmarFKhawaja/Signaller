@@ -1,5 +1,11 @@
 #!/usr/bin/env bash
 
+# signaller-api
+kubectl delete -f resources/signaller-api/deployment.yaml
+kubectl delete -f resources/signaller-api/service.yaml
+kubectl delete -f resources/signaller-api/ingress.yaml
+kubectl delete -f resources/signaller-api/config-map-cfg.yaml
+
 # signaller-web
 kubectl delete -f resources/signaller-web/deployment.yaml
 kubectl delete -f resources/signaller-web/service.yaml

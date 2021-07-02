@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 
-namespace Signaller.Apps.WebApp.Hubs
+namespace Signaller.Apps.ApiApp.Hubs
 {
     [Authorize]
     public class ChatHub : Hub

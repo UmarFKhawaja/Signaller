@@ -3,3 +3,7 @@
 # signaller-web
 docker build solution/Projects/Signaller.Apps.WebApp -t khawajaumarfarooq/signaller-web
 docker push khawajaumarfarooq/signaller-web
+
+# signaller-api
+docker build solution/Projects/Signaller.Apps.ApiApp -t khawajaumarfarooq/signaller-api
+docker push khawajaumarfarooq/signaller-api

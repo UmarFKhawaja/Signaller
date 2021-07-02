@@ -1,22 +1,17 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
-using System.Text;
+using System.Net;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc.Diagnostics;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
-using Signaller.Apps.WebApp.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Signaller.Apps.WebApp.Hubs;
+using Signaller.Apps.WebApp.Data;
 
 namespace Signaller.Apps.WebApp
 {
@@ -57,15 +52,28 @@ namespace Signaller.Apps.WebApp
             services
                 .AddRazorPages()
                 .AddRazorRuntimeCompilation();
-
+            
             services
-                .AddSignalR()
-                .AddStackExchangeRedis
+                .Configure<ForwardedHeadersOptions>
                 (
-                    Configuration.GetConnectionString("Cache"),
                     (options) =>
                     {
-                        options.Configuration.ChannelPrefix = "Signaller";
+                        options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+
+                        if (!Environment.IsDevelopment())
+                        {
+                            var knownNetworks = Configuration["ForwardedHeadersOptions:KnownNetworks"].Split(";");
+
+                            foreach (var knownNetwork in knownNetworks)
+                            {
+                                var parts = knownNetwork.Split(":");
+
+                                var prefix = parts[0];
+                                var prefixLength = int.Parse(parts[1]);
+
+                                options.KnownNetworks.Add(new IPNetwork(IPAddress.Parse(prefix), prefixLength));
+                            }
+                        }
                     }
                 );
         }
@@ -80,6 +88,8 @@ namespace Signaller.Apps.WebApp
             {
                 Console.WriteLine(e);
             }
+
+            app.UseForwardedHeaders();
 
             if (Environment.IsDevelopment())
             {
@@ -105,7 +115,6 @@ namespace Signaller.Apps.WebApp
                 (endpoints) =>
                 {
                     endpoints.MapRazorPages();
-                    endpoints.MapHub<ChatHub>("/chat");
                 }
             );
         }

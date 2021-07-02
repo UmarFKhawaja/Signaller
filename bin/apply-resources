@@ -20,3 +20,9 @@ kubectl apply -f resources/signaller-web/config-map-cfg.yaml
 kubectl apply -f resources/signaller-web/ingress.yaml
 kubectl apply -f resources/signaller-web/service.yaml
 kubectl apply -f resources/signaller-web/deployment.yaml
+
+# signaller-api
+kubectl apply -f resources/signaller-api/config-map-cfg.yaml
+kubectl apply -f resources/signaller-api/ingress.yaml
+kubectl apply -f resources/signaller-api/service.yaml
+kubectl apply -f resources/signaller-api/deployment.yaml

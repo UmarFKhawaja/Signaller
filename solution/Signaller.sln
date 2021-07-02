@@ -7,6 +7,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Projects", "Projects", "{6C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Signaller.Apps.WebApp", "Projects\Signaller.Apps.WebApp\Signaller.Apps.WebApp.csproj", "{FE52F1BA-FC0E-478A-8631-A34CF6EA93A8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Signaller.Apps.ApiApp", "Projects\Signaller.Apps.ApiApp\Signaller.Apps.ApiApp.csproj", "{9A0D9E1A-6310-46EF-A07E-F454D8BFA3FC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -32,8 +34,21 @@ Global
 		{FE52F1BA-FC0E-478A-8631-A34CF6EA93A8}.Release|x64.Build.0 = Release|Any CPU
 		{FE52F1BA-FC0E-478A-8631-A34CF6EA93A8}.Release|x86.ActiveCfg = Release|Any CPU
 		{FE52F1BA-FC0E-478A-8631-A34CF6EA93A8}.Release|x86.Build.0 = Release|Any CPU
+		{9A0D9E1A-6310-46EF-A07E-F454D8BFA3FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9A0D9E1A-6310-46EF-A07E-F454D8BFA3FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9A0D9E1A-6310-46EF-A07E-F454D8BFA3FC}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{9A0D9E1A-6310-46EF-A07E-F454D8BFA3FC}.Debug|x64.Build.0 = Debug|Any CPU
+		{9A0D9E1A-6310-46EF-A07E-F454D8BFA3FC}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{9A0D9E1A-6310-46EF-A07E-F454D8BFA3FC}.Debug|x86.Build.0 = Debug|Any CPU
+		{9A0D9E1A-6310-46EF-A07E-F454D8BFA3FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9A0D9E1A-6310-46EF-A07E-F454D8BFA3FC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9A0D9E1A-6310-46EF-A07E-F454D8BFA3FC}.Release|x64.ActiveCfg = Release|Any CPU
+		{9A0D9E1A-6310-46EF-A07E-F454D8BFA3FC}.Release|x64.Build.0 = Release|Any CPU
+		{9A0D9E1A-6310-46EF-A07E-F454D8BFA3FC}.Release|x86.ActiveCfg = Release|Any CPU
+		{9A0D9E1A-6310-46EF-A07E-F454D8BFA3FC}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{FE52F1BA-FC0E-478A-8631-A34CF6EA93A8} = {6C58E1FF-4FE2-434B-8EFF-CDCA1CAF4DE7}
+		{9A0D9E1A-6310-46EF-A07E-F454D8BFA3FC} = {6C58E1FF-4FE2-434B-8EFF-CDCA1CAF4DE7}
 	EndGlobalSection
 EndGlobal
