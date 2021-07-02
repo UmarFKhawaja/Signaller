@@ -7,14 +7,18 @@ metadata:
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
     nginx.ingress.kubernetes.io/force-ssl-redirect: "false"
     nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
+    nginx.ingress.kubernetes.io/affinity: "cookie"
+    nginx.ingress.kubernetes.io/affinity-mode: "persistent"
     cert-manager.io/issuer: signaller-ca
 spec:
   tls:
     - hosts:
-        - 'signaller.local'
+        - 'www.signaller.local'
       secretName: signaller-web-tls
   rules:
-    - host: signaller.local
+    - host: www.signaller.local
       http:
         paths:
           - path: /

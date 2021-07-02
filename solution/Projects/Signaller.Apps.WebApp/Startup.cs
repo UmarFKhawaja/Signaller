@@ -16,7 +16,6 @@ using Signaller.Apps.WebApp.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.IdentityModel.Tokens;
 using Signaller.Apps.WebApp.Hubs;
 
 namespace Signaller.Apps.WebApp
@@ -38,7 +37,7 @@ namespace Signaller.Apps.WebApp
             services
                 .AddDbContext<ApplicationDbContext>
                 (
-                    (options) => options.UseSqlite(Configuration.GetConnectionString("DefaultConnection"))
+                    (options) => options.UseMySQL(Configuration.GetConnectionString("Main"))
                 );
 
             services
@@ -60,11 +59,28 @@ namespace Signaller.Apps.WebApp
                 .AddRazorRuntimeCompilation();
 
             services
-                .AddSignalR();
+                .AddSignalR()
+                .AddStackExchangeRedis
+                (
+                    Configuration.GetConnectionString("Cache"),
+                    (options) =>
+                    {
+                        options.Configuration.ChannelPrefix = "Signaller";
+                    }
+                );
         }
 
-        public void Configure(IApplicationBuilder app)
+        public void Configure(IApplicationBuilder app, ApplicationDbContext dataContext)
         {
+            try
+            {
+                dataContext.Database.Migrate();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+
             if (Environment.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

@@ -9,8 +9,14 @@ kubectl apply -f resources/signaller-ca/issuer.yaml
 
 sleep 2
 
+# signaller-cache
+helm install signaller-cache bitnami/redis -n signaller -f resources/signaller-cache/values.yaml
+
+# signaller-db
+helm install signaller-db bitnami/mysql -n signaller -f resources/signaller-db/values.yaml
+
 # signaller-web
 kubectl apply -f resources/signaller-web/config-map-cfg.yaml
-kubectl apply -f resources/signaller-web/deployment.yaml
-kubectl apply -f resources/signaller-web/service.yaml
 kubectl apply -f resources/signaller-web/ingress.yaml
+kubectl apply -f resources/signaller-web/service.yaml
+kubectl apply -f resources/signaller-web/deployment.yaml

@@ -9,10 +9,10 @@ spec:
     name: signaller-ca
     kind: Issuer
   dnsNames:
-    - 'signaller.local'
+    - 'www.signaller.local'
   # acme:
   #   config:
   #     - dns01:
   #         provider: route53
   #       domains:
-  #         - 'signaller.local'
+  #         - 'www.signaller.local'

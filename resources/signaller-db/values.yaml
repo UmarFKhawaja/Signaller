@@ -1,0 +1,5 @@
+auth:
+  rootPassword: Signaller1234
+  database: signaller
+  username: signaller
+  password: Signaller1234

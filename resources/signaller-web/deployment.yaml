@@ -4,7 +4,7 @@ metadata:
   namespace: signaller
   name: signaller-web
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
       app: signaller-web
@@ -16,6 +16,7 @@ spec:
       containers:
         - name: signaller-web
           image: docker.io/khawajaumarfarooq/signaller-web:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 80
           envFrom:
