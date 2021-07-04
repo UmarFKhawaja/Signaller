@@ -120,16 +120,19 @@ namespace Signaller.Apps.ApiApp
 
                         if (!Environment.IsDevelopment())
                         {
-                            var knownNetworks = Configuration["ForwardedHeadersOptions:KnownNetworks"].Split(";");
+                            var knownNetworks = Configuration["ForwardedHeadersOptions:KnownNetworks"];
 
-                            foreach (var knownNetwork in knownNetworks)
+                            if (!string.IsNullOrEmpty(knownNetworks))
                             {
-                                var parts = knownNetwork.Split(":");
+                                foreach (var knownNetwork in knownNetworks.Split(";"))
+                                {
+                                    var parts = knownNetwork.Split(":");
 
-                                var prefix = parts[0];
-                                var prefixLength = int.Parse(parts[1]);
+                                    var prefix = parts[0];
+                                    var prefixLength = int.Parse(parts[1]);
 
-                                options.KnownNetworks.Add(new IPNetwork(IPAddress.Parse(prefix), prefixLength));
+                                    options.KnownNetworks.Add(new IPNetwork(IPAddress.Parse(prefix), prefixLength));
+                                }
                             }
                         }
                     }

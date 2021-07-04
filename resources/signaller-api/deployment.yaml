@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: signaller
+  name: signaller-api
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: signaller-api
+  template:
+    metadata:
+      labels:
+        app: signaller-api
+    spec:
+      containers:
+        - name: signaller-api
+          image: docker.io/khawajaumarfarooq/signaller-api:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+          envFrom:
+            - configMapRef:
+                name: signaller-api-cfg

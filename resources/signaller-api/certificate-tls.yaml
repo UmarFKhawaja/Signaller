@@ -1,0 +1,18 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  namespace: signaller
+  name: signaller-api-tls
+spec:
+  secretName: signaller-api-tls
+  issuerRef:
+    name: signaller-ca
+    kind: Issuer
+  dnsNames:
+    - 'api.signaller.local'
+  # acme:
+  #   config:
+  #     - dns01:
+  #         provider: route53
+  #       domains:
+  #         - 'api.signaller.local'
