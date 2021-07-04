@@ -8,7 +8,7 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
         "ASPNETCORE_Kestrel__Certificates__Default__Path": "../../Keys/localhost.pfx",
-        "ASPNETCORE_Kestrel__Certificates__Default__Password": "Password1234"
+        "ASPNETCORE_Kestrel__Certificates__Default__Password": "Signaller1234"
       }
     }
   }

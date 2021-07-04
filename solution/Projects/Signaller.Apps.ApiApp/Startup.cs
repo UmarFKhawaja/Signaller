@@ -2,16 +2,20 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Threading.Tasks;
+using GraphQL;
+using GraphQL.NewtonsoftJson;
+using GraphQL.Server;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Signaller.Apps.ApiApp.Hubs;
+using Signaller.Apps.ApiApp.Types;
 
 namespace Signaller.Apps.ApiApp
 {
@@ -80,7 +84,33 @@ namespace Signaller.Apps.ApiApp
 
             services
                 .AddAuthorization();
+
+            services
+                .AddGraphQL
+                (
+                    (options) =>
+                    {
+                        options.EnableMetrics = false;
+                    }
+                )
+                .AddNewtonsoftJson();
+            services.AddSingleton<IDocumentExecuter, DocumentExecuter>();
+            services.AddSingleton<IDocumentWriter, DocumentWriter>();
+            services.AddSingleton<SignallerSchema>();
+            services.AddSingleton<QueryType>();
+            services.AddSingleton<MutationType>();
+            services.AddSingleton<SubscriptionType>();
+            services.AddSingleton<PostType>();
+            services.AddSingleton<UserType>();
             
+            services.Configure<KestrelServerOptions>
+            (
+                (options) =>
+                {
+                    options.AllowSynchronousIO = true;
+                }
+            );
+
             services
                 .Configure<ForwardedHeadersOptions>
                 (
@@ -109,7 +139,7 @@ namespace Signaller.Apps.ApiApp
         public void Configure(IApplicationBuilder app)
         {
             app.UseForwardedHeaders();
-
+            
             if (Environment.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -137,6 +167,10 @@ namespace Signaller.Apps.ApiApp
                     endpoints.MapHub<ChatHub>("/chat");
                 }
             );
+
+            app.UseGraphQL<SignallerSchema>();
+
+            app.UseGraphQLGraphiQL();
         }
     }
 }

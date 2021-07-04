@@ -33,9 +33,9 @@ openssl req -new -sha256 -nodes -out localhost.csr -newkey rsa:4096 -keyout loca
 
 if [ -e ~/Keys/huntingdonresearch.srl ]
 then
-	openssl x509 -req -in localhost.csr -CA ~/Keys/huntingdonresearch.pem -CAkey ~/Keys/huntingdonresearch.key -CAserial ~/Keys/huntingdonresearch.srl -out localhost.crt -days 3653 -sha256 -extfile localhost.ext
+	openssl x509 -req -in localhost.csr -CA ~/Keys/huntingdonresearch.pem -CAkey ~/Keys/huntingdonresearch.key -CAserial ~/Keys/huntingdonresearch.srl -out localhost.crt -days 365 -sha256 -extfile localhost.ext
 else
-	openssl x509 -req -in localhost.csr -CA ~/Keys/huntingdonresearch.pem -CAkey ~/Keys/huntingdonresearch.key -CAcreateserial -out localhost.crt -days 3653 -sha256 -extfile localhost.ext
+	openssl x509 -req -in localhost.csr -CA ~/Keys/huntingdonresearch.pem -CAkey ~/Keys/huntingdonresearch.key -CAcreateserial -out localhost.crt -days 365 -sha256 -extfile localhost.ext
 fi
 
 rm -f localhost.pem
