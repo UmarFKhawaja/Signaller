@@ -73,7 +73,7 @@ namespace Signaller.Apps.ApiApp
                     JwtBearerDefaults.AuthenticationScheme,
                     (options) =>
                     {
-                        options.Authority = Configuration["Authentication:Bearer:Authority"];
+                        options.Authority = Configuration["Authentication:JwtBearer:Authority"];
                         options.TokenValidationParameters = new TokenValidationParameters
                         {
                             ValidateAudience = false

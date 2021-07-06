@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Net;
 using Microsoft.AspNetCore.Builder;
@@ -47,6 +48,12 @@ namespace Signaller.Apps.WebApp
                     }
                 )
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            services
+                .AddSingleton<JwtSecurityTokenHandler>();
+
+            services
+                .AddControllers();
 
             services
                 .AddRazorPages()
@@ -116,6 +123,7 @@ namespace Signaller.Apps.WebApp
             (
                 (endpoints) =>
                 {
+                    endpoints.MapControllers();
                     endpoints.MapRazorPages();
                 }
             );
