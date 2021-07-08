@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Net;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Hosting;
@@ -50,7 +50,12 @@ namespace Signaller.Apps.WebApp
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services
-                .AddSingleton<JwtSecurityTokenHandler>();
+                .AddIdentityServer()
+                .AddApiAuthorization<IdentityUser, ApplicationDbContext>();
+
+            services
+                .AddAuthentication()
+                .AddIdentityServerJwt();
 
             services
                 .AddControllers();
@@ -115,6 +120,8 @@ namespace Signaller.Apps.WebApp
             app.UseStaticFiles();
 
             app.UseRouting();
+
+            app.UseIdentityServer();
 
             app.UseAuthentication();
             app.UseAuthorization();

@@ -29,12 +29,14 @@ namespace Signaller.Apps.WebApp.Controllers
         [Route("")]
         public IActionResult Index()
         {
-            var token = GetJwtToken(User);
+            var securityTokenDescriptor = GetSecurityTokenDescriptor(User);
+            var token = JwtSecurityTokenHandler.CreateToken(securityTokenDescriptor);
+            var content = JwtSecurityTokenHandler.WriteToken(token);
 
-            return Content(JwtSecurityTokenHandler.WriteToken(token));
+            return Content(content);
         }
         
-        private JwtSecurityToken GetJwtToken
+        private SecurityTokenDescriptor GetSecurityTokenDescriptor
         (
             ClaimsPrincipal user,
             Claim[] additionalClaims = null
@@ -55,27 +57,29 @@ namespace Signaller.Apps.WebApp.Controllers
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
                 }
                 .Concat(additionalClaims ?? Array.Empty<Claim>())
-                .ToArray();
+                .ToDictionary((claim) => claim.Type, (claim) => (object) claim);
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Authentication:JwtBearer:IssuerSigningKey"]));
             var signingCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
-            // var tokenDescription = new SecurityTokenDescriptor
-            // {
-            //     Issuer = issuer,
-            //     Audience = audience,
-            //     Expires = expires,
-            //     Claims = claims,
-            //     SigningCredentials = signingCredentials
-            // };
+            var securityTokenDescriptor = new SecurityTokenDescriptor
+            {
+                Issuer = issuer,
+                Audience = audience,
+                Expires = expires,
+                Claims = claims,
+                SigningCredentials = signingCredentials
+            };
 
-            return new JwtSecurityToken
-            (
-                issuer: issuer,
-                audience: audience,
-                expires: expires,
-                claims: claims,
-                signingCredentials: signingCredentials
-            );
+            return securityTokenDescriptor;
+            //
+            // return new JwtSecurityToken
+            // (
+            //     issuer: issuer,
+            //     audience: audience,
+            //     expires: expires,
+            //     claims: claims,
+            //     signingCredentials: signingCredentials
+            // );
         }
     }
 }

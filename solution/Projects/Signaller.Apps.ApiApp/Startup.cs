@@ -67,7 +67,15 @@ namespace Signaller.Apps.ApiApp
                 );
 
             services
-                .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddAuthentication
+                (
+                    (options) =>
+                    {
+                        options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                    }
+                )
                 .AddJwtBearer
                 (
                     JwtBearerDefaults.AuthenticationScheme,
@@ -76,7 +84,10 @@ namespace Signaller.Apps.ApiApp
                         options.Authority = Configuration["Authentication:JwtBearer:Authority"];
                         options.TokenValidationParameters = new TokenValidationParameters
                         {
-                            ValidateAudience = false
+                            ValidateIssuer = true,
+                            ValidIssuer = Configuration["Authentication:JwtBearer:Issuer"],
+                            ValidateAudience = true,
+                            ValidAudience = Configuration["Authentication:JwtBearer:Audience"]
                         };
                         options.RequireHttpsMetadata = false;
                     }
