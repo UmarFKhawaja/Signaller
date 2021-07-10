@@ -2,16 +2,17 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using IdentityServer4.EntityFramework.DbContexts;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Signaller.Apps.WebApp.Data;
+using Signaller.Data;
+using Signaller.Models;
 
 namespace Signaller.Apps.WebApp
 {
@@ -39,7 +40,7 @@ namespace Signaller.Apps.WebApp
                 .AddDatabaseDeveloperPageExceptionFilter();
 
             services
-                .AddDefaultIdentity<IdentityUser>
+                .AddDefaultIdentity<User>
                 (
                     (options) =>
                     {
@@ -51,7 +52,7 @@ namespace Signaller.Apps.WebApp
 
             services
                 .AddIdentityServer()
-                .AddApiAuthorization<IdentityUser, ApplicationDbContext>();
+                .AddApiAuthorization<User, PersistedGrantDbContext>();
 
             services
                 .AddAuthentication()
@@ -94,15 +95,6 @@ namespace Signaller.Apps.WebApp
 
         public void Configure(IApplicationBuilder app, ApplicationDbContext dataContext)
         {
-            try
-            {
-                dataContext.Database.Migrate();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-            }
-
             app.UseForwardedHeaders();
 
             if (Environment.IsDevelopment())
