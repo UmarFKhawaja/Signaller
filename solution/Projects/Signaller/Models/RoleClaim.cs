@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Signaller.Models
 {
-    public class RoleClaim : IdentityRoleClaim<int>
+    public class RoleClaim : IdentityRoleClaim<string>
     {
         // public int Id { get; set; }
 

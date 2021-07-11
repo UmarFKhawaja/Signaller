@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using IdentityServer4.EntityFramework.Interfaces;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Signaller.Models;
 
@@ -27,7 +25,20 @@ namespace Signaller.Data
                 .ConfigureUserLoginEntity()
                 .ConfigureUserRoleEntity();
         }
+        
+        public virtual DbSet<User> Roles { get; set; }
+
+        public virtual DbSet<User> RoleClaims { get; set; }
+
+        public virtual DbSet<User> Users { get; set; }
+
+        public virtual DbSet<User> UserClaims { get; set; }
+
+        public virtual DbSet<User> UserLogins { get; set; }
+
+        public virtual DbSet<User> UserRoles { get; set; }
     }
+
     public static class IdentityDbContextExtensions
     {
         public static ModelBuilder ConfigureRoleEntity(this ModelBuilder modelBuilder)

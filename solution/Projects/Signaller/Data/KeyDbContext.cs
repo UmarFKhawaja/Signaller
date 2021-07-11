@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Signaller.Data
 {
-    public class KeysDbContext : DbContext, IDataProtectionKeyContext
+    public class KeyDbContext : DbContext, IDataProtectionKeyContext
     {
-        public KeysDbContext(DbContextOptions<KeysDbContext> options)
+        public KeyDbContext(DbContextOptions<KeyDbContext> options)
             : base(options)
         {
         }

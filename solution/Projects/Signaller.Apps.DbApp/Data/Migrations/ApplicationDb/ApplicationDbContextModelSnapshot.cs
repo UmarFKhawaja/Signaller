@@ -53,16 +53,14 @@ namespace Signaller.Apps.DbApp.Data.Migrations.ApplicationDb
                     b.Property<string>("ClaimValue")
                         .HasColumnType("text");
 
-                    b.Property<int>("RoleId")
+                    b.Property<string>("RoleId")
+                        .IsRequired()
                         .HasMaxLength(256)
-                        .HasColumnType("int");
-
-                    b.Property<string>("RoleId1")
                         .HasColumnType("varchar(256)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("RoleId1");
+                    b.HasIndex("RoleId");
 
                     b.ToTable("RoleClaim");
                 });
@@ -152,25 +150,23 @@ namespace Signaller.Apps.DbApp.Data.Migrations.ApplicationDb
                     b.Property<string>("ClaimValue")
                         .HasColumnType("text");
 
-                    b.Property<int>("UserId")
+                    b.Property<string>("UserId")
+                        .IsRequired()
                         .HasMaxLength(256)
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId1")
                         .HasColumnType("varchar(256)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId1");
+                    b.HasIndex("UserId");
 
                     b.ToTable("UserClaim");
                 });
 
             modelBuilder.Entity("Signaller.Models.UserLogin", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("varchar(767)");
 
                     b.Property<string>("LoginProvider")
                         .IsRequired()
@@ -187,16 +183,14 @@ namespace Signaller.Apps.DbApp.Data.Migrations.ApplicationDb
                         .HasMaxLength(256)
                         .HasColumnType("varchar(256)");
 
-                    b.Property<int>("UserId")
+                    b.Property<string>("UserId")
+                        .IsRequired()
                         .HasMaxLength(256)
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId1")
                         .HasColumnType("varchar(256)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId1");
+                    b.HasIndex("UserId");
 
                     b.HasIndex("LoginProvider", "ProviderKey")
                         .IsUnique();
@@ -206,29 +200,23 @@ namespace Signaller.Apps.DbApp.Data.Migrations.ApplicationDb
 
             modelBuilder.Entity("Signaller.Models.UserRole", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("varchar(767)");
 
-                    b.Property<int>("RoleId")
+                    b.Property<string>("RoleId")
+                        .IsRequired()
                         .HasMaxLength(256)
-                        .HasColumnType("int");
-
-                    b.Property<string>("RoleId1")
                         .HasColumnType("varchar(256)");
 
-                    b.Property<int>("UserId")
+                    b.Property<string>("UserId")
+                        .IsRequired()
                         .HasMaxLength(256)
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId1")
                         .HasColumnType("varchar(256)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("RoleId1");
-
-                    b.HasIndex("UserId1");
+                    b.HasIndex("RoleId");
 
                     b.HasIndex("UserId", "RoleId")
                         .IsUnique();
@@ -240,7 +228,9 @@ namespace Signaller.Apps.DbApp.Data.Migrations.ApplicationDb
                 {
                     b.HasOne("Signaller.Models.Role", "Role")
                         .WithMany("RoleClaims")
-                        .HasForeignKey("RoleId1");
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Role");
                 });
@@ -249,7 +239,9 @@ namespace Signaller.Apps.DbApp.Data.Migrations.ApplicationDb
                 {
                     b.HasOne("Signaller.Models.User", "User")
                         .WithMany("UserClaims")
-                        .HasForeignKey("UserId1");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("User");
                 });
@@ -258,7 +250,9 @@ namespace Signaller.Apps.DbApp.Data.Migrations.ApplicationDb
                 {
                     b.HasOne("Signaller.Models.User", "User")
                         .WithMany("UserLogins")
-                        .HasForeignKey("UserId1");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("User");
                 });
@@ -267,11 +261,15 @@ namespace Signaller.Apps.DbApp.Data.Migrations.ApplicationDb
                 {
                     b.HasOne("Signaller.Models.Role", "Role")
                         .WithMany("UserRoles")
-                        .HasForeignKey("RoleId1");
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Signaller.Models.User", "User")
                         .WithMany("UserRoles")
-                        .HasForeignKey("UserId1");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Role");
 

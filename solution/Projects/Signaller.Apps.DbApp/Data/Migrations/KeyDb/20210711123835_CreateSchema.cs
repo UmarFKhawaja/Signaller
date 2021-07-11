@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 using MySql.EntityFrameworkCore.Metadata;
 
-namespace Signaller.Apps.DbApp.Data.Migrations.KeysDb
+namespace Signaller.Apps.DbApp.Data.Migrations.KeyDb
 {
     public partial class CreateSchema : Migration
     {

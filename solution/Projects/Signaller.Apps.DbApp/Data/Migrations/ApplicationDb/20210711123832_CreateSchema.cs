@@ -53,8 +53,7 @@ namespace Signaller.Apps.DbApp.Data.Migrations.ApplicationDb
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    RoleId1 = table.Column<string>(type: "varchar(256)", nullable: true),
-                    RoleId = table.Column<int>(type: "int", maxLength: 256, nullable: false),
+                    RoleId = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: false),
                     ClaimType = table.Column<string>(type: "text", nullable: false),
                     ClaimValue = table.Column<string>(type: "text", nullable: true)
                 },
@@ -62,11 +61,11 @@ namespace Signaller.Apps.DbApp.Data.Migrations.ApplicationDb
                 {
                     table.PrimaryKey("PK_RoleClaim", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_RoleClaim_Role_RoleId1",
-                        column: x => x.RoleId1,
+                        name: "FK_RoleClaim_Role_RoleId",
+                        column: x => x.RoleId,
                         principalTable: "Role",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -75,8 +74,7 @@ namespace Signaller.Apps.DbApp.Data.Migrations.ApplicationDb
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    UserId1 = table.Column<string>(type: "varchar(256)", nullable: true),
-                    UserId = table.Column<int>(type: "int", maxLength: 256, nullable: false),
+                    UserId = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: false),
                     ClaimType = table.Column<string>(type: "text", nullable: false),
                     ClaimValue = table.Column<string>(type: "text", nullable: true)
                 },
@@ -84,68 +82,63 @@ namespace Signaller.Apps.DbApp.Data.Migrations.ApplicationDb
                 {
                     table.PrimaryKey("PK_UserClaim", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_UserClaim_User_UserId1",
-                        column: x => x.UserId1,
+                        name: "FK_UserClaim_User_UserId",
+                        column: x => x.UserId,
                         principalTable: "User",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
                 name: "UserLogin",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    UserId1 = table.Column<string>(type: "varchar(256)", nullable: true),
+                    Id = table.Column<string>(type: "varchar(767)", nullable: false),
                     LoginProvider = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: false),
                     ProviderKey = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: false),
                     ProviderDisplayName = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: false),
-                    UserId = table.Column<int>(type: "int", maxLength: 256, nullable: false)
+                    UserId = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_UserLogin", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_UserLogin_User_UserId1",
-                        column: x => x.UserId1,
+                        name: "FK_UserLogin_User_UserId",
+                        column: x => x.UserId,
                         principalTable: "User",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
                 name: "UserRole",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    UserId1 = table.Column<string>(type: "varchar(256)", nullable: true),
-                    RoleId1 = table.Column<string>(type: "varchar(256)", nullable: true),
-                    UserId = table.Column<int>(type: "int", maxLength: 256, nullable: false),
-                    RoleId = table.Column<int>(type: "int", maxLength: 256, nullable: false)
+                    Id = table.Column<string>(type: "varchar(767)", nullable: false),
+                    UserId = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: false),
+                    RoleId = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_UserRole", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_UserRole_Role_RoleId1",
-                        column: x => x.RoleId1,
+                        name: "FK_UserRole_Role_RoleId",
+                        column: x => x.RoleId,
                         principalTable: "Role",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_UserRole_User_UserId1",
-                        column: x => x.UserId1,
+                        name: "FK_UserRole_User_UserId",
+                        column: x => x.UserId,
                         principalTable: "User",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_RoleClaim_RoleId1",
+                name: "IX_RoleClaim_RoleId",
                 table: "RoleClaim",
-                column: "RoleId1");
+                column: "RoleId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_User_Email",
@@ -178,9 +171,9 @@ namespace Signaller.Apps.DbApp.Data.Migrations.ApplicationDb
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserClaim_UserId1",
+                name: "IX_UserClaim_UserId",
                 table: "UserClaim",
-                column: "UserId1");
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserLogin_LoginProvider_ProviderKey",
@@ -189,25 +182,20 @@ namespace Signaller.Apps.DbApp.Data.Migrations.ApplicationDb
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserLogin_UserId1",
+                name: "IX_UserLogin_UserId",
                 table: "UserLogin",
-                column: "UserId1");
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserRole_RoleId1",
+                name: "IX_UserRole_RoleId",
                 table: "UserRole",
-                column: "RoleId1");
+                column: "RoleId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserRole_UserId_RoleId",
                 table: "UserRole",
                 columns: new[] { "UserId", "RoleId" },
                 unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_UserRole_UserId1",
-                table: "UserRole",
-                column: "UserId1");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

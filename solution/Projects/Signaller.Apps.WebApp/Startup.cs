@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
+using System.Security.Cryptography.X509Certificates;
 using IdentityServer4.EntityFramework.DbContexts;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
@@ -52,7 +54,20 @@ namespace Signaller.Apps.WebApp
 
             services
                 .AddIdentityServer()
-                .AddApiAuthorization<User, PersistedGrantDbContext>();
+                .AddApiAuthorization<User, PersistedGrantDbContext>()
+                .AddServices
+                (
+                    Environment.IsDevelopment(),
+                    (builder) => builder.AddDeveloperSigningCredential(false),
+                    (builder) => builder.AddSigningCredential
+                    (
+                        new X509Certificate2
+                        (
+                            File.ReadAllBytes(Configuration["IdentityServer:Key:FilePath"]),
+                            (string)Configuration["IdentityServer:Key:Password"]
+                        )
+                    )
+                );
 
             services
                 .AddAuthentication()
@@ -126,6 +141,27 @@ namespace Signaller.Apps.WebApp
                     endpoints.MapRazorPages();
                 }
             );
+        }
+    }
+
+    public static class StartupExtensions
+    {
+        public static IIdentityServerBuilder AddServices
+        (
+            this IIdentityServerBuilder identityServerBuilder,
+            bool condition,
+            Func<IIdentityServerBuilder, IIdentityServerBuilder> ifTrue,
+            Func<IIdentityServerBuilder, IIdentityServerBuilder> ifFalse
+        )
+        {
+            if (condition)
+            {
+                return ifTrue(identityServerBuilder);
+            }
+            else
+            {
+                return ifFalse(identityServerBuilder);
+            }
         }
     }
 }

@@ -27,8 +27,6 @@
         </Content>
     </ItemGroup>
     <ItemGroup>
-      <Folder Include="Data\Migrations\ConfigurationDb" />
-      <Folder Include="Data\Migrations\KeysDb" />
-      <Folder Include="Data\Migrations\PersistedGrantDb" />
+      <Folder Include="Data" />
     </ItemGroup>
 </Project>

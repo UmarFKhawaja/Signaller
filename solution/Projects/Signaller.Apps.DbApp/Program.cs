@@ -63,7 +63,7 @@ namespace Signaller.Apps.DbApp
                 }
             );
 
-            services.AddDbContext<KeysDbContext>
+            services.AddDbContext<KeyDbContext>
             (
                 (db) => db
                     .UseMySQL

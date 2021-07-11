@@ -18,14 +18,14 @@ namespace Signaller.Services
         (
             ConfigurationDbContext configurationDbContext,
             PersistedGrantDbContext persistedGrantDbContext,
-            KeysDbContext keysDbContext,
+            KeyDbContext keyDbContext,
             ApplicationDbContext applicationDbContext
         )
             : base()
         {
             ConfigurationDbContext = configurationDbContext;
             PersistedGrantDbContext = persistedGrantDbContext;
-            KeysDbContext = keysDbContext;
+            KeyDbContext = keyDbContext;
             ApplicationDbContext = applicationDbContext;
         }
 
@@ -33,7 +33,7 @@ namespace Signaller.Services
 
         private PersistedGrantDbContext PersistedGrantDbContext { get; }
 
-        private KeysDbContext KeysDbContext { get; }
+        private KeyDbContext KeyDbContext { get; }
 
         private ApplicationDbContext ApplicationDbContext { get; }
 
@@ -41,7 +41,7 @@ namespace Signaller.Services
         {
             await MigrateConfigurationDbAsync();
             await MigratePersistedGrantDbAsync();
-            await MigrateKeysDbAsync();
+            await MigrateKeyDbAsync();
             await MigrateApplicationDbAsync();
             
             await SeedConfigurationDbAsync(configuration);
@@ -61,9 +61,9 @@ namespace Signaller.Services
             await context.Database.MigrateAsync();
         }
 
-        private async Task MigrateKeysDbAsync()
+        private async Task MigrateKeyDbAsync()
         {
-            var context = KeysDbContext;
+            var context = KeyDbContext;
             
             await context.Database.MigrateAsync();
         }

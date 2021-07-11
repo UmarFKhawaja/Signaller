@@ -4,9 +4,9 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Signaller.Models
 {
-    public class UserLogin : IdentityUserLogin<int>
+    public class UserLogin : IdentityUserLogin<string>
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
 
         // public string LoginProvider { get; set; }
 
