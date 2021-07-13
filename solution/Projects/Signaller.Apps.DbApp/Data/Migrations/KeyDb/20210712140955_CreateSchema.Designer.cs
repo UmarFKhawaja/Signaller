@@ -8,7 +8,7 @@ using Signaller.Data;
 namespace Signaller.Apps.DbApp.Data.Migrations.KeyDb
 {
     [DbContext(typeof(KeyDbContext))]
-    [Migration("20210711123835_CreateSchema")]
+    [Migration("20210712140955_CreateSchema")]
     partial class CreateSchema
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

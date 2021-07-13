@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -53,13 +55,18 @@ namespace Signaller.Apps.WebApp.Controllers
             var expires = DateTime.UtcNow.Add(TimeSpan.FromMinutes(expiration));
             var claims = new Claim[]
                 {
-                    new Claim(JwtRegisteredClaimNames.Sub,user.Identity.Name),
-                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+                    new Claim(JwtRegisteredClaimNames.Sub, user.Identity.Name, ClaimValueTypes.String, issuer, issuer),
+                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString(), ClaimValueTypes.String, issuer, issuer)
                 }
                 .Concat(additionalClaims ?? Array.Empty<Claim>())
                 .ToDictionary((claim) => claim.Type, (claim) => (object) claim);
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Authentication:JwtBearer:IssuerSigningKey"]));
-            var signingCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+
+            var certificate = new X509Certificate2
+            (
+                System.IO.File.ReadAllBytes(Configuration["IdentityServer:Key:FilePath"]),
+                (string) Configuration["IdentityServer:Key:Password"]
+            );
+            var signingCredentials = new X509SigningCredentials(certificate);
 
             var securityTokenDescriptor = new SecurityTokenDescriptor
             {
@@ -71,15 +78,6 @@ namespace Signaller.Apps.WebApp.Controllers
             };
 
             return securityTokenDescriptor;
-            //
-            // return new JwtSecurityToken
-            // (
-            //     issuer: issuer,
-            //     audience: audience,
-            //     expires: expires,
-            //     claims: claims,
-            //     signingCredentials: signingCredentials
-            // );
         }
     }
 }

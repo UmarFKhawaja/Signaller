@@ -1,20 +1,22 @@
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Security.Cryptography.X509Certificates;
+using IdentityServer4;
 using IdentityServer4.EntityFramework.DbContexts;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Signaller.Data;
-using Signaller.Models;
 
 namespace Signaller.Apps.WebApp
 {
@@ -42,7 +44,7 @@ namespace Signaller.Apps.WebApp
                 .AddDatabaseDeveloperPageExceptionFilter();
 
             services
-                .AddDefaultIdentity<User>
+                .AddIdentity<IdentityUser, IdentityRole>
                 (
                     (options) =>
                     {
@@ -50,11 +52,16 @@ namespace Signaller.Apps.WebApp
                         options.Password.RequireNonAlphanumeric = false;
                     }
                 )
+                .AddDefaultTokenProviders()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services
+                .AddAuthentication()
+                .AddIdentityServerJwt();
+
+            services
                 .AddIdentityServer()
-                .AddApiAuthorization<User, PersistedGrantDbContext>()
+                .AddApiAuthorization<IdentityUser, PersistedGrantDbContext>()
                 .AddServices
                 (
                     Environment.IsDevelopment(),
@@ -70,8 +77,7 @@ namespace Signaller.Apps.WebApp
                 );
 
             services
-                .AddAuthentication()
-                .AddIdentityServerJwt();
+                .AddSingleton<JwtSecurityTokenHandler>();
 
             services
                 .AddControllers();

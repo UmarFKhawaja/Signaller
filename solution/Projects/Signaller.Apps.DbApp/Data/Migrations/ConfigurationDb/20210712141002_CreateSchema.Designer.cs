@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Signaller.Apps.DbApp.Data.Migrations.ConfigurationDb
 {
     [DbContext(typeof(ConfigurationDbContext))]
-    [Migration("20210711123842_CreateSchema")]
+    [Migration("20210712141002_CreateSchema")]
     partial class CreateSchema
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

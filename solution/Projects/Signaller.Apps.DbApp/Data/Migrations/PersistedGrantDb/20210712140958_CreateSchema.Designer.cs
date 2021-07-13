@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Signaller.Apps.DbApp.Data.Migrations.PersistedGrantDb
 {
     [DbContext(typeof(PersistedGrantDbContext))]
-    [Migration("20210711123838_CreateSchema")]
+    [Migration("20210712140958_CreateSchema")]
     partial class CreateSchema
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
