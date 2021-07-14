@@ -1,0 +1,17 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  namespace: signaller
+  name: signaller-db
+spec:
+  completions: 1
+  parallelism: 1
+  template:
+    metadata:
+      name: signaller-db
+    spec:
+      containers:
+        - name: signaller-db
+          image: khawajaumarfarooq/signaller-db
+          command: ["dotnet", "Signaller.Apps.DbApp.dll"]
+      restartPolicy: Never

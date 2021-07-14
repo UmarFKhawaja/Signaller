@@ -16,6 +16,7 @@ kubectl delete -f resources/signaller-web/config-map-cfg.yaml
 helm delete signaller-cache -n signaller
 
 # signaller-db
+kubectl delete -f resources/signaller-db/job.yaml
 helm delete signaller-db -n signaller
 
 # signaller-ca

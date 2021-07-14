@@ -44,7 +44,7 @@ namespace Signaller.Apps.WebApp
                 .AddDatabaseDeveloperPageExceptionFilter();
 
             services
-                .AddIdentity<IdentityUser, IdentityRole>
+                .AddDefaultIdentity<IdentityUser>
                 (
                     (options) =>
                     {
@@ -52,12 +52,7 @@ namespace Signaller.Apps.WebApp
                         options.Password.RequireNonAlphanumeric = false;
                     }
                 )
-                .AddDefaultTokenProviders()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
-
-            services
-                .AddAuthentication()
-                .AddIdentityServerJwt();
 
             services
                 .AddIdentityServer()
@@ -75,6 +70,10 @@ namespace Signaller.Apps.WebApp
                         )
                     )
                 );
+
+            services
+                .AddAuthentication(IdentityServerConstants.DefaultCookieAuthenticationScheme)
+                .AddIdentityServerJwt();
 
             services
                 .AddSingleton<JwtSecurityTokenHandler>();

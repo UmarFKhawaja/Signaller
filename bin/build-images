@@ -1,9 +1,17 @@
 #!/usr/bin/env bash
 
+docker build solution --tag khawajaumarfarooq/signaller-base
+
 # signaller-web
-docker build solution/Projects/Signaller.Apps.WebApp -t khawajaumarfarooq/signaller-web
+docker build solution/Projects/Signaller.Apps.WebApp --tag khawajaumarfarooq/signaller-web --build-arg BASE_IMAGE_NAME=khawajaumarfarooq/signaller-base
 docker push khawajaumarfarooq/signaller-web
 
 # signaller-api
-docker build solution/Projects/Signaller.Apps.ApiApp -t khawajaumarfarooq/signaller-api
+docker build solution/Projects/Signaller.Apps.ApiApp --tag khawajaumarfarooq/signaller-api --build-arg BASE_IMAGE_NAME=khawajaumarfarooq/signaller-base
 docker push khawajaumarfarooq/signaller-api
+
+# signaller-db
+docker build solution/Projects/Signaller.Apps.DbApp --tag khawajaumarfarooq/signaller-db --build-arg BASE_IMAGE_NAME=khawajaumarfarooq/signaller-base
+docker push khawajaumarfarooq/signaller-db
+
+docker image prune -f

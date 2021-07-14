@@ -1,27 +1,22 @@
-﻿FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS base
+﻿ARG BASE_IMAGE_NAME
+FROM ${BASE_IMAGE_NAME} AS build
 
-WORKDIR /app
-
-EXPOSE 80
-EXPOSE 443
-
-FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
-
-WORKDIR /src
-
-COPY Signaller.Apps.ApiApp.csproj .
-
-RUN dotnet restore Signaller.Apps.ApiApp.csproj
-
-COPY . .
-
-WORKDIR /src
+WORKDIR /app/Projects/Signaller.Apps.ApiApp
 
 RUN dotnet build Signaller.Apps.ApiApp.csproj -c Release -o /app/build
 
 FROM build AS publish
 
 RUN dotnet publish Signaller.Apps.ApiApp.csproj -c Release -o /app/publish
+
+COPY --from=build /app/Keys/localhost.pfx /app/publish
+
+FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS base
+
+WORKDIR /app
+
+EXPOSE 80
+EXPOSE 443
 
 FROM base AS final
 

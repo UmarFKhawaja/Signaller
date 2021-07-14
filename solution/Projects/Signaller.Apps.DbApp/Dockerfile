@@ -1,13 +1,13 @@
 ﻿ARG BASE_IMAGE_NAME
 FROM ${BASE_IMAGE_NAME} AS build
 
-WORKDIR /app/Projects/Signaller.Apps.WebApp
+WORKDIR /app/Projects/Signaller.Apps.DbApp
 
-RUN dotnet build Signaller.Apps.WebApp.csproj -c Release -o /app/build
+RUN dotnet build Signaller.Apps.DbApp.csproj -c Release -o /app/build
 
 FROM build AS publish
 
-RUN dotnet publish Signaller.Apps.WebApp.csproj -c Release -o /app/publish
+RUN dotnet publish Signaller.Apps.DbApp.csproj -c Release -o /app/publish
 
 COPY --from=build /app/Keys/localhost.pfx /app/publish
 
@@ -24,4 +24,4 @@ WORKDIR /app
 
 COPY --from=publish /app/publish .
 
-ENTRYPOINT ["dotnet", "Signaller.Apps.WebApp.dll"]
+ENTRYPOINT ["dotnet", "Signaller.Apps.DbApp.dll"]
