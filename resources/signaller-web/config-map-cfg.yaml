@@ -4,3 +4,4 @@ metadata:
   namespace: signaller
   name: signaller-web-cfg
 data:
+  ASPNETCORE_IdentityServer__PublicOrigin: "https://www.signaller.local"

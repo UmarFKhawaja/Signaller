@@ -55,25 +55,60 @@ namespace Signaller.Apps.WebApp
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services
-                .AddIdentityServer()
-                .AddApiAuthorization<IdentityUser, PersistedGrantDbContext>()
-                .AddServices
+                .AddIdentityServer
                 (
-                    Environment.IsDevelopment(),
-                    (builder) => builder.AddDeveloperSigningCredential(false),
-                    (builder) => builder.AddSigningCredential
+                    (options) =>
+                    {
+                        options.Events.RaiseErrorEvents = true;
+                        options.Events.RaiseInformationEvents = true;
+                        options.Events.RaiseFailureEvents = true;
+                        options.Events.RaiseSuccessEvents = true;
+
+                        options.EmitStaticAudienceClaim = true;
+                    }
+                )
+                .AddConfigurationStore
+                (
+                    (options) =>
+                    { 
+                        options.ConfigureDbContext = (builder) => builder.UseMySQL(Configuration.GetConnectionString("Main")); 
+                    }
+                )
+                .AddOperationalStore
+                (
+                    (options) =>
+                    { 
+                        options.ConfigureDbContext = (builder) => builder.UseMySQL(Configuration.GetConnectionString("Main")); 
+         
+                        options.EnableTokenCleanup = true; 
+                        options.TokenCleanupInterval = 30; 
+                    }
+                )
+                .AddAspNetIdentity<IdentityUser>()
+                .AddSigningCredential
+                (
+                    new X509Certificate2
                     (
-                        new X509Certificate2
-                        (
-                            File.ReadAllBytes(Configuration["IdentityServer:Key:FilePath"]),
-                            (string)Configuration["IdentityServer:Key:Password"]
-                        )
+                        File.ReadAllBytes(Configuration["IdentityServer:Key:FilePath"]),
+                        (string)Configuration["IdentityServer:Key:Password"]
                     )
+                // )
+                // .AddServices
+                // (
+                //     Environment.IsDevelopment(),
+                //     (builder) => builder.AddDeveloperSigningCredential(false),
+                //     (builder) => builder.AddSigningCredential
+                //     (
+                //         new X509Certificate2
+                //         (
+                //             File.ReadAllBytes(Configuration["IdentityServer:Key:FilePath"]),
+                //             (string)Configuration["IdentityServer:Key:Password"]
+                //         )
+                //     )
                 );
 
             services
-                .AddAuthentication(IdentityServerConstants.DefaultCookieAuthenticationScheme)
-                .AddIdentityServerJwt();
+                .AddAuthentication();
 
             services
                 .AddSingleton<JwtSecurityTokenHandler>();

@@ -27,6 +27,6 @@ kubectl apply -f resources/signaller-api/ingress.yaml
 kubectl apply -f resources/signaller-api/service.yaml
 kubectl apply -f resources/signaller-api/deployment.yaml
 
-sleep 30
+sleep 60
 
 kubectl apply -f resources/signaller-db/job.yaml
